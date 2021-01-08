@@ -1,4 +1,5 @@
-import React, { Component, useState, useEffect, useRef } from "react";
+import React, { Component, useState, useEffect } from "react";
+import {useParams} from 'react-router-dom'
 import QuestionOption from "./questionOption";
 import axios from "axios";
 import "../scripts/scriptsQuestion";
@@ -11,9 +12,10 @@ import {
   shuffleOptions,
 } from "./../scripts/scriptsQuestion";
 
-const url = "http://localhost:5000/api/questions";
 
 const Question = () => {
+  const {theme} = useParams()
+  const url = `http://localhost:5000/api/questions/${theme}`;
   let [questions, setQuestions] = useState([]);
   let [shuffledOptions, setshuffledOptions] = useState([]);
 

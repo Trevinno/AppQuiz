@@ -1,13 +1,17 @@
 import React, { Component } from "react";
+import { useHistory } from "react-router-dom";
+
 
 import "../css/quizApp.css";
 
-const MenuItem = ({ theme, picUrl, size, history }) => {
+const MenuItem = ({ theme, picUrl, size }) => {
+  let history = useHistory()
+
   return (
     <React.Fragment>
       <div
         className={`large menu-item`}
-        onClick={() => history.push(`${theme}`)}
+        onClick={() => history.push(`/Preguntas/${theme}`)}
       >
         <div
           className="background-image"

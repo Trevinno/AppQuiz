@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import "../css/navbar.css";
 
@@ -9,7 +10,9 @@ const Navbar = () => {
         <span className="navbar-toggle" id="js-navbar-toggle">
           <i className="fas fa-bars"></i>
         </span>
-
+        <Link
+        to="/Home"
+        >
         <a className="logo">
           Daru Quiz
           <img
@@ -19,6 +22,7 @@ const Navbar = () => {
             height="50"
           />
         </a>
+        </Link>
 
         <ul className="main-nav" id="js-menu"></ul>
       </nav>
