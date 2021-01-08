@@ -1,27 +1,103 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useRef } from "react";
+import QuestionOption from "./questionOption";
+import Timer from "./timer";
 
-import '../css/question.css'
+import "../css/question.css";
 
 const Question = () => {
-    return (  
-        <React.Fragment>
-            <div className="center">
-                <div className="page">
-                    <div className="question">Le gana Rayados al Santos?</div>
-                    <div className="father_flex"> 
-                        <div className="left_space son_flex">Si</div>
-                        <div className="son_flex">Chance</div>
-                    </div>
+  let newQuestionIndex = () => {
+    let newIndicePregunta = Math.floor(Math.random() * questions.length);
+    while (currentQuestion === newIndicePregunta) {
+      newIndicePregunta = Math.floor(Math.random() * questions.length);
+    }
+    return newIndicePregunta;
+  };
 
-                    <div className="father_flex"> 
-                        <div className="left_space son_flex">No se</div>
-                        <div className="son_flex">Talvez</div>
-                    </div>
+  let questions = [
+    {
+      _id: "1",
+      question: "¿Le gana rayados a Santos?",
+      multipleChoice: ["Si", "No", "Chance", "No sé"],
+      option: 1,
+    },
+    {
+      _id: "2",
+      question: "¿Le gana rayados a Santos Pregunta 2?",
+      multipleChoice: ["Si", "No", "Chance", "No sé"],
+      option: 0,
+    },
+  ];
 
-                </div>
-            </div>
-        </React.Fragment>
-    );
-}
- 
+  let [currentQuestion, setCurrentQuestion] = useState(
+    Math.floor(Math.random() * questions.length)
+  );
+
+  let [currentClasses, setCurrentClasses] = useState(["", "", "", ""]);
+
+  let question = questions[currentQuestion];
+  let multipleChoices = question.multipleChoice;
+
+  const handleSelectedOption = (idOption) => {
+    let newCurrentClasses = ["", "", "", ""];
+    let emptyClasses = ["", "", "", ""];
+    if (question.option === idOption) {
+      newCurrentClasses[idOption] = "correct";
+    } else {
+      newCurrentClasses[idOption] = "wrong";
+    }
+    setCurrentClasses(newCurrentClasses);
+
+    let newIndicePregunta = newQuestionIndex();
+
+    setTimeout(() => {
+      setCurrentClasses(emptyClasses);
+      setCurrentQuestion(newIndicePregunta);
+    }, 500);
+  };
+
+  let choicesDiv = (
+    <div className="choices-father">
+      <div className="flex-column">
+        <QuestionOption
+          handleSelectedOption={handleSelectedOption}
+          idOption={0}
+          choice={multipleChoices[0]}
+          classes={currentClasses[0]}
+        />
+        <QuestionOption
+          idOption={1}
+          handleSelectedOption={handleSelectedOption}
+          choice={multipleChoices[1]}
+          classes={currentClasses[1]}
+        />
+      </div>
+      <div className="flex-column">
+        <QuestionOption
+          idOption={2}
+          handleSelectedOption={handleSelectedOption}
+          choice={multipleChoices[2]}
+          classes={currentClasses[2]}
+        />
+        <QuestionOption
+          idOption={3}
+          handleSelectedOption={handleSelectedOption}
+          choice={multipleChoices[3]}
+          classes={currentClasses[3]}
+        />
+      </div>
+    </div>
+  );
+
+  let questionDiv = (
+    <div>
+      <div className="flex-container">
+        <div className="title">{question.question}</div>
+        {choicesDiv}
+      </div>
+    </div>
+  );
+
+  return <React.Fragment>{questionDiv}</React.Fragment>;
+};
+
 export default Question;
