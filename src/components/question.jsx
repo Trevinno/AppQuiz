@@ -1,12 +1,10 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useRef } from "react";
 import QuestionOption from "./questionOption";
 import Timer from "./timer";
 
 import "../css/question.css";
 
 const Question = () => {
-  let [currentTimer, setCurrentTimer] = useState(10);
-
   let newQuestionIndex = () => {
     let newIndicePregunta = Math.floor(Math.random() * questions.length);
     while (currentQuestion === newIndicePregunta) {
@@ -90,33 +88,8 @@ const Question = () => {
     </div>
   );
 
-  let changingQuestion = false;
-
-  const handleTimeout = () => {
-    if (!changingQuestion) {
-      let newIndicePregunta = newQuestionIndex();
-      changingQuestion = true;
-
-      setCurrentQuestion(newIndicePregunta);
-      setCurrentTimer(10);
-
-      changingQuestion = false;
-    }
-  };
-
-  const handleTimer = () => {
-    if (currentTimer === 0 && !changingQuestion) {
-      handleTimeout();
-    } else if (!changingQuestion) {
-      setTimeout(() => setCurrentTimer(currentTimer - 1), 1000);
-    }
-  };
-
-  handleTimer();
-
   let questionDiv = (
     <div>
-      <Timer seconds={currentTimer} />
       <div className="flex-container">
         <div className="title">{question.question}</div>
         {choicesDiv}
