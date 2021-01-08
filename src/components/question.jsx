@@ -1,10 +1,24 @@
-import React, { Component, useState, useRef } from "react";
+import React, { Component, useState, useEffect, useRef } from "react";
 import QuestionOption from "./questionOption";
-import Timer from "./timer";
+import axios from "axios";
 
 import "../css/question.css";
 
+const url = "http://localhost:5000/api/questions";
+
 const Question = () => {
+  let [questions2, setQuestions2] = useState([]);
+
+  const getQuestions = async () => {
+    let questions = await axios.get(url);
+    return questions;
+  };
+
+  useEffect(async () => {
+    let questionsAPU = await getQuestions();
+    setQuestions2(questionsAPU);
+  }, []);
+
   let newQuestionIndex = () => {
     let newIndicePregunta = Math.floor(Math.random() * questions.length);
     while (currentQuestion === newIndicePregunta) {
@@ -13,20 +27,23 @@ const Question = () => {
     return newIndicePregunta;
   };
 
-  let questions = [
-    {
-      _id: "1",
-      question: "¿Le gana rayados a Santos?",
-      multipleChoice: ["Si", "No", "Chance", "No sé"],
-      option: 1,
-    },
-    {
-      _id: "2",
-      question: "¿Le gana rayados a Santos Pregunta 2?",
-      multipleChoice: ["Si", "No", "Chance", "No sé"],
-      option: 0,
-    },
-  ];
+  // let questions = [
+  //   {
+  //     _id: "1",
+  //     question: "¿Le gana rayados a Santos?",
+  //     multipleChoice: ["Si", "No", "Chance", "No sé"],
+  //     option: 1,
+  //   },
+  //   {
+  //     _id: "2",
+  //     question: "¿Le gana rayados a Santos Pregunta 2?",
+  //     multipleChoice: ["Si", "No", "Chance", "No sé"],
+  //     option: 0,
+  //   },
+  // ];
+
+  let questions = questions2;
+  console.log(questions2);
 
   let [currentQuestion, setCurrentQuestion] = useState(
     Math.floor(Math.random() * questions.length)
@@ -40,7 +57,7 @@ const Question = () => {
   const handleSelectedOption = (idOption) => {
     let newCurrentClasses = ["", "", "", ""];
     let emptyClasses = ["", "", "", ""];
-    if (question.option === idOption) {
+    if (0 === idOption) {
       newCurrentClasses[idOption] = "correct";
     } else {
       newCurrentClasses[idOption] = "wrong";
