@@ -1,59 +1,47 @@
-@import '//fonts.googleapis.com/css?family=Lato';
- *, *:before, *:after {
-	 box-sizing: border-box;
+@import "//fonts.googleapis.com/css?family=Lato";
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-
-.center {
-    display: flex;
-    justify-content: center;
-}
- .page {
-     margin-top: 8rem;
-	 height: 100%;
-	 width: 45%;
-	 padding: 2rem;
-	 display: inline-block;
-     vertical-align: top;
-     flex:none;
-}
- .question {
-	 width: 100%;
-	 font-size: 4em;
-	 text-align: center;
-	 margin-bottom: 1rem;
-}
- 
- .father_flex {
-	 width: 20rem;
-    
-     display: flex;
-     justify-content: space-between center;
-}
- .son_flex {
-     margin-top: 3rem;
-     margin-right: 2rem;
-	 display: inline-block;
-	 line-height: 3em;
-	 text-align: center;
-	 background: rgb(211, 167, 103);
-	 border-radius: 2rem;
-	 color: #fff;
-	 transition: 0.2s;
-     cursor: pointer;
-     flex: none;
-     width: 80%;
+.title {
+  font-size: 3rem;
 }
 
-.left_space {
-    margin-left: 6rem;
+.choices-father {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  width: 50rem;
+  height: 30rem;
+  justify-content: space-around;
 }
 
-.right_answer {
-    background: rgb(0, 104, 69);
+.choices {
+  background: rgb(211, 167, 103);
+  border-radius: 2rem;
+  color: #fff;
+  text-align: center;
+  margin: 1rem;
+  font-size: 2rem;
+  padding: 3rem 10rem 3rem 10rem;
 }
 
-.wrong_answer {
-    background: rgb(207, 9, 33);
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
+.hover {
+  background-color: rgba(50, 115, 220, 0.3);
+}
+
+.correct {
+  background-color: rgba(37, 241, 68, 0.762);
+}
+
+.wrong {
+  background-color: rgba(241, 37, 37, 0.762);
+}
