@@ -11,7 +11,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/Home" component={Home} />
-        <Route path="/Question" component={Question} />
+        {/* <Route path="/Question" component={Question} /> */}
         <Route path="/Preguntas/:theme" component={Question} />
         <Redirect from="/" to="/Home" />
       </Switch>

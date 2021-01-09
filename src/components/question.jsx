@@ -1,10 +1,15 @@
 import React, { Component, useState, useEffect } from "react";
-import {useParams} from 'react-router-dom'
-import QuestionOption from "./questionOption";
-import axios from "axios";
+import {useParams, useHistory} from 'react-router-dom'
+import Modal from 'react-modal'
+import axios from 'axios';
+
+import QuestionOption from './questionOption';
+import PopUp from './popUp'
+
 import "../scripts/scriptsQuestion";
 
 import "../css/question.css";
+
 import Loader from "./loader";
 import {
   newQuestionIndex,
@@ -15,16 +20,18 @@ import {
 
 const Question = () => {
   const {theme} = useParams()
+  let history = useHistory()
   const url = `http://localhost:5000/api/questions/${theme}`;
   let [questions, setQuestions] = useState([]);
   let [shuffledOptions, setshuffledOptions] = useState([]);
-
+  let [correctAnswers, setcorrectAnswers] = useState(0)
+  let [currentCount, setcurrentCount] = useState(1)
+  let [modalValue, setmodalValue] = useState(false)
   let [currentQuestion, setCurrentQuestion] = useState(
     Math.floor(Math.random() * questions.length)
   );
   let [currentClasses, setCurrentClasses] = useState(["", "", "", ""]);
-
-  console.log(shuffledOptions);
+  const totalQuestions = 8;
   const getQuestions = async () => {
     let questions = await axios.get(url);
     return questions;
@@ -40,25 +47,45 @@ const Question = () => {
     return <Loader />;
   }
 
+  const handleCloseModal = () => {
+    console.log('hello modal')
+    setmodalValue(false)
+    history.push('/Home')
+  }
+
+  const handleOpenModal = () => {
+      setmodalValue(true)
+  }
+
   let question = questions[currentQuestion];
   let multipleChoices = question.multipleChoice;
+
+  let usedQuestions = []
 
   const handleSelectedOption = (idOption) => {
     let newCurrentClasses = ["", "", "", ""];
     let emptyClasses = ["", "", "", ""];
     if (0 === idOption) {
       newCurrentClasses[idOption] = "correct";
+      setcorrectAnswers(correctAnswers++)
     } else {
       newCurrentClasses[idOption] = "wrong";
     }
     setCurrentClasses(newCurrentClasses);
 
-    let newIndicePregunta = newQuestionIndex(currentQuestion, questions);
+    if (currentCount < totalQuestions) {
+    usedQuestions.push(currentQuestion);
+    let newIndicePregunta = newQuestionIndex(questions, usedQuestions);
 
     setTimeout(() => {
       setCurrentClasses(emptyClasses);
       setCurrentQuestion(newIndicePregunta);
+      setcurrentCount(currentCount + 1)
     }, 500);
+
+    } else {
+      handleOpenModal()
+    }
   };
 
   let choicesDiv = (
@@ -113,9 +140,19 @@ const Question = () => {
   let questionDiv = (
     <div>
       <div className="flex-container">
-        <div className="title">{question.question}</div>
+        <div className="title">{question.question}  {` ${currentCount} / ${totalQuestions}`}</div>
         {choicesDiv}
       </div>
+      <Modal
+        isOpen={modalValue}
+        shouldCloseOnOverlayClick={false}
+        > 
+        <PopUp
+        handleCloseModal={handleCloseModal}
+        totalQuestions={totalQuestions}
+        correctAnswers={correctAnswers}
+        />
+        </Modal>
     </div>
   );
 

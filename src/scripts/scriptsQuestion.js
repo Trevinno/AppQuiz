@@ -1,6 +1,6 @@
-export let newQuestionIndex = (currentQuestion, questions) => {
+export let newQuestionIndex = (questions, usedQuestions) => {
   let newIndicePregunta = Math.floor(Math.random() * questions.length);
-  while (currentQuestion === newIndicePregunta) {
+  while ( usedQuestions.includes(newIndicePregunta)) {
     newIndicePregunta = Math.floor(Math.random() * questions.length);
   }
   return newIndicePregunta;
