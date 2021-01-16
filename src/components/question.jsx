@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import {useParams, useHistory} from 'react-router-dom'
-import Modal from 'react-modal'
+// import Modal from 'react-modal'
+import Modal from 'react-bootstrap/Modal'
 import axios from 'axios';
 
 import QuestionOption from './questionOption';
@@ -46,6 +47,19 @@ const Question = () => {
   if (questions.length === 0) {
     return <Loader />;
   }
+
+  const Message = (correctAnswers) => {
+    console.log(correctAnswers)
+    switch(true) {
+        case (correctAnswers < 3):
+            return 'Te ira mejor a la proxima'
+        case (correctAnswers < 6):
+            return 'Bien!'
+        case (correctAnswers < 8):
+            return 'Felicidades!'
+    }
+  }
+
 
   const handleCloseModal = () => {
     console.log('hello modal')
@@ -143,15 +157,30 @@ const Question = () => {
         <div className="title">{question.question}  {` ${currentCount} / ${totalQuestions}`}</div>
         {choicesDiv}
       </div>
-      <Modal
+      {/* <Modal
         isOpen={modalValue}
         shouldCloseOnOverlayClick={false}
+        style={{
+          width: '20rem'
+        }}
         > 
         <PopUp
         handleCloseModal={handleCloseModal}
         totalQuestions={totalQuestions}
         correctAnswers={correctAnswers}
         />
+        </Modal> */}
+        <Modal show={modalValue} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{Message(correctAnswers)}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <PopUp
+          handleCloseModal={handleCloseModal}
+          totalQuestions={totalQuestions}
+          correctAnswers={correctAnswers}
+          />
+        </Modal.Body>
         </Modal>
     </div>
   );
